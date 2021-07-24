@@ -43,6 +43,19 @@
        
        01 WS-OUTPUT-STATUS     PIC X(2).
            88 OUTPUT-OK        VALUE "00".
+       
+       01 WS-REC-VALID         PIC X(1).
+           88 REC-VALID        VALUE "Y".
+           88 REC-INVALID      VALUE "N".
+
+       01 WS-RLP-COUNT         PIC 9(4).
+       01 WS-CON-COUNT         PIC 9(4).
+       01 WS-PC-COUNT          PIC 9(4).
+       01 WS-FC-COUNT          PIC 9(4).
+       01 WS-LAB-COUNT         PIC 9(4).
+       01 WS-LIB-COUNT         PIC 9(4).
+       01 WS-SC-COUNT          PIC 9(4).
+       01 WS-SPOILT-COUNT      PIC 9(4).
 
        01 WS-OUTPUT-DATA.
            03 PARTY-NAME       PIC X(20).
@@ -55,41 +68,101 @@
        01 WS-WIN-STATUS        PIC X(3)  VALUE "***".
  
       *------------------------------------------
+      * LINKAGE SECTION
+      *------------------------------------------
+       LINKAGE SECTION.
+       
+       01 INPUT-PARM           PIC X(4).
+
+      *------------------------------------------
       * Program Logic
       *------------------------------------------
-       PROCEDURE DIVISION.
+       PROCEDURE DIVISION USING INPUT-PARM.
 
-       A100-MAIN-LOGIC         SECTION.
+       A000-MAIN-LOGIC         SECTION.
            DISPLAY "Status - Program Starting..."
-           PERFORM B100-INIT-CODE
-           PERFORM C100-READ-FILE UNTIL INPUT-EOF
+           PERFORM B000-INIT-CODE
+           PERFORM E000-PROCESS UNTIL INPUT-EOF
       *    PERFORM MAIN LOGIC FOR THE LOOP HERE     
-           PERFORM X100-WRITE-OUTPUT
-           PERFORM D100-CLOSE-FILE
+           PERFORM X000-WRITE-OUTPUT
+           PERFORM D000-CLOSE-FILE
            DISPLAY "Status - Program Complete"
            STOP RUN.
        
-       B100-INIT-CODE          SECTION.
+       B000-INIT-CODE          SECTION.
            OPEN INPUT  VOTESINPUT
            OPEN OUTPUT RESULTSOUTPUT
            DISPLAY "Status - Files Opened"
 
-           PERFORM C100-READ-FILE
+           PERFORM C000-READ-FILE
            .
        
-       C100-READ-FILE          SECTION.
+       C000-READ-FILE          SECTION.
            READ VOTESINPUT
            DISPLAY "New Record: " VOTES-RECORD
            .
 
-       D100-CLOSE-FILE         SECTION.
+       D000-CLOSE-FILE         SECTION.
            CLOSE   VOTESINPUT
                    RESULTSOUTPUT
            
            DISPLAY "Status - Files Closed"
            .
+       
+       E000-PROCESS            SECTION.
+           PERFORM F000-CHECK-CONST
 
-       X100-WRITE-OUTPUT       SECTION.
+           IF REC-VALID
+               PERFORM G000-VALIDATE-VOTE
+               PERFORM C000-READ-FILE
+           ELSE
+               PERFORM C000-READ-FILE
+           END-IF
+           .
+
+       F000-CHECK-CONST        SECTION.
+           SET REC-VALID TO TRUE
+
+           EVALUATE CONSTITUENCY-ID
+               WHEN INPUT-PARM
+                   DISPLAY "Status - Valid Constituency"
+                   
+               WHEN OTHER
+                   DISPLAY "Status - Invalid Constituency"
+                   SET REC-INVALID TO FALSE
+           END-EVALUATE
+           .
+
+       G000-VALIDATE-VOTE      SECTION.
+           EVALUATE VOTE-VALUE
+               WHEN 0
+                   DISPLAY "+1 Vote for Raving Loony Party"
+                   ADD 1 TO WS-RLP-COUNT
+               WHEN 1
+                   DISPLAY "+1 Vote for Conservative"
+                   ADD 1 TO WS-CON-COUNT
+               WHEN 2
+                   DISPLAY "+1 Vote for Plaid Cymru"
+                   ADD 1 TO WS-PC-COUNT                          
+               WHEN 3
+                   DISPLAY "+1 Vote for Free Cleethorpes"
+                   ADD 1 TO WS-FC-COUNT
+               WHEN 4
+                   DISPLAY "+1 Vote for Labour"
+                   ADD 1 TO WS-LAB-COUNT
+               WHEN 5
+                    DISPLAY "+1 Vote for Liberal"
+                    ADD 1 TO WS-LIB-COUNT                        
+               WHEN 6
+                   DISPLAY "+1 Vote for Scottish National"
+                   ADD 1 TO WS-SC-COUNT    
+               WHEN OTHER
+                   DISPLAY "+1 for Spoilt Vote"
+                   ADD 1 TO WS-SPOILT-COUNT
+           END-EVALUATE
+           .
+
+       X000-WRITE-OUTPUT       SECTION.
       *    PUT FORMATTING HERE?
            WRITE RESULTS-RECORD
 
