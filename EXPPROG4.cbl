@@ -101,6 +101,7 @@
            PERFORM F000-CHECK-CONST
 
            IF REC-VALID
+      *        NEED TO LOOP 72 TIMES??? OR UNTIL SPACE
                PERFORM G000-VALIDATE-VOTE
                PERFORM D000-READ-FILE
            ELSE
@@ -162,7 +163,7 @@
            END-EVALUATE
            .
 
-       W000-WRITE-lOSER        SECTION.
+       W000-WRITE-LOSER        SECTION.
       *    PUT FORMATTING HERE?
            WRITE RESULTS-RECORD
 
