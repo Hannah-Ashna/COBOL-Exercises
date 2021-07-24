@@ -21,7 +21,7 @@
            RECORDING MODE IS F.
        01 VOTES-RECORD.
            03 CONSTITUENCY-ID  PIC X(4).
-           03 VOTE-VALUE OCCURS 72 TIMES INDEXED BY VOTE-ID PIC 9(1).
+           03 VOTE-VALUE OCCURS 72 TIMES INDEXED BY VOTE-IDX PIC 9(1).
            03 SPACE-FILLER     PIC X(4).
 
       *------------------------------------------
@@ -47,6 +47,12 @@
        01 WS-REC-VALID         PIC X(1).
            88 REC-VALID        VALUE "Y".
            88 REC-INVALID      VALUE "N".
+
+       01 WS-VOTE-END          PIC X(1).
+           88 VOTE-OK          VALUE "Y".
+           88 VOTE-END         VALUE "N".
+       
+       01 WS-COUNTER           PIC 9(2).
 
        01 WS-RLP-COUNT         PIC 9(4).
        01 WS-CON-COUNT         PIC 9(4).
@@ -101,8 +107,8 @@
            PERFORM F000-CHECK-CONST
 
            IF REC-VALID
-      *        NEED TO LOOP 72 TIMES??? OR UNTIL SPACE
-               PERFORM G000-VALIDATE-VOTE
+               MOVE 1 TO WS-COUNTER
+               PERFORM G000-VALIDATE-VOTE UNTIL VOTE-END
                PERFORM D000-READ-FILE
            ELSE
                PERFORM D000-READ-FILE
@@ -135,32 +141,42 @@
            .
 
        G000-VALIDATE-VOTE      SECTION.
-           EVALUATE VOTE-VALUE
-               WHEN 0
-                   DISPLAY "+1 Vote for Raving Loony Party"
-                   ADD 1 TO WS-RLP-COUNT
-               WHEN 1
-                   DISPLAY "+1 Vote for Conservative"
-                   ADD 1 TO WS-CON-COUNT
-               WHEN 2
-                   DISPLAY "+1 Vote for Plaid Cymru"
-                   ADD 1 TO WS-PC-COUNT                          
-               WHEN 3
-                   DISPLAY "+1 Vote for Free Cleethorpes"
-                   ADD 1 TO WS-FC-COUNT
-               WHEN 4
-                   DISPLAY "+1 Vote for Labour"
-                   ADD 1 TO WS-LAB-COUNT
-               WHEN 5
-                    DISPLAY "+1 Vote for Liberal"
-                    ADD 1 TO WS-LIB-COUNT                        
-               WHEN 6
-                   DISPLAY "+1 Vote for Scottish National"
-                   ADD 1 TO WS-SC-COUNT    
-               WHEN OTHER
-                   DISPLAY "+1 for Spoilt Vote"
-                   ADD 1 TO WS-SPOILT-COUNT
-           END-EVALUATE
+           SET VOTE-OK TO TRUE
+
+           IF VOTE-IDX(WS-COUNTER) NOT = " " AND WS-COUNTER < 77
+               EVALUATE VOTE-VALUE
+                   WHEN 0
+                       DISPLAY "+1 Vote for Raving Loony Party"
+                       ADD 1 TO WS-RLP-COUNT
+                   WHEN 1
+                       DISPLAY "+1 Vote for Conservative"
+                       ADD 1 TO WS-CON-COUNT
+                   WHEN 2
+                       DISPLAY "+1 Vote for Plaid Cymru"
+                       ADD 1 TO WS-PC-COUNT                          
+                   WHEN 3
+                       DISPLAY "+1 Vote for Free Cleethorpes"
+                       ADD 1 TO WS-FC-COUNT
+                   WHEN 4
+                       DISPLAY "+1 Vote for Labour"
+                       ADD 1 TO WS-LAB-COUNT
+                   WHEN 5
+                        DISPLAY "+1 Vote for Liberal"
+                        ADD 1 TO WS-LIB-COUNT                        
+                   WHEN 6
+                       DISPLAY "+1 Vote for Scottish National"
+                       ADD 1 TO WS-SC-COUNT    
+                   WHEN OTHER
+                       DISPLAY "+1 for Spoilt Vote"
+                       ADD 1 TO WS-SPOILT-COUNT
+               END-EVALUATE
+
+           ELSE
+               DISPLAY "Status - Vote Validation Complete"
+               SET VOTE-END TO TRUE
+           END-IF
+
+           ADD 1 TO WS-COUNTER
            .
 
        W000-WRITE-LOSER        SECTION.
