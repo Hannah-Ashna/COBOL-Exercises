@@ -82,10 +82,10 @@
        A000-MAIN-LOGIC         SECTION.
            DISPLAY "Status - Program Starting..."
            PERFORM B000-INIT-CODE
-           PERFORM E000-PROCESS UNTIL INPUT-EOF
+           PERFORM C000-PROCESS UNTIL INPUT-EOF
       *    PERFORM MAIN LOGIC FOR THE LOOP HERE     
-           PERFORM X000-WRITE-OUTPUT
-           PERFORM D000-CLOSE-FILE
+      *    PERFORM X000-WRITE-OUTPUT
+           PERFORM E000-CLOSE-FILE
            DISPLAY "Status - Program Complete"
            STOP RUN.
        
@@ -97,29 +97,29 @@
            PERFORM C000-READ-FILE
            .
        
-       C000-READ-FILE          SECTION.
+       C000-PROCESS            SECTION.
+           PERFORM F000-CHECK-CONST
+
+           IF REC-VALID
+               PERFORM G000-VALIDATE-VOTE
+               PERFORM D000-READ-FILE
+           ELSE
+               PERFORM D000-READ-FILE
+           END-IF
+           .
+
+       D000-READ-FILE          SECTION.
            READ VOTESINPUT
            DISPLAY "New Record: " VOTES-RECORD
            .
 
-       D000-CLOSE-FILE         SECTION.
+       E000-CLOSE-FILE         SECTION.
            CLOSE   VOTESINPUT
                    RESULTSOUTPUT
            
            DISPLAY "Status - Files Closed"
            .
        
-       E000-PROCESS            SECTION.
-           PERFORM F000-CHECK-CONST
-
-           IF REC-VALID
-               PERFORM G000-VALIDATE-VOTE
-               PERFORM C000-READ-FILE
-           ELSE
-               PERFORM C000-READ-FILE
-           END-IF
-           .
-
        F000-CHECK-CONST        SECTION.
            SET REC-VALID TO TRUE
 
@@ -162,7 +162,7 @@
            END-EVALUATE
            .
 
-       X000-WRITE-OUTPUT       SECTION.
+       W000-WRITE-lOSER        SECTION.
       *    PUT FORMATTING HERE?
            WRITE RESULTS-RECORD
 
@@ -170,3 +170,5 @@
                DISPLAY "Error - Cannot write to Output File"
            ENDIF
            .
+       
+       W001-WRITE-WINNER       SECTION.
