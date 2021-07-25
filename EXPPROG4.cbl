@@ -1,7 +1,6 @@
        ID DIVISION.
        PROGRAM-ID. EXPPROG4.
        AUTHOR. HANNAH JACOB.
-       INSTALLATION. RSM.
        DATE-WRITTEN. 23RD JULY 2021.
        DATE-COMPILED.
       *
@@ -180,7 +179,7 @@
            .
 
        W000-WRITE-LOSER        SECTION.
-      *    PUT FORMATTING HERE?
+
            WRITE RESULTS-RECORD
 
            IF NOT OUTPUT-OK
