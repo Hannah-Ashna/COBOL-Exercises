@@ -1,0 +1,3 @@
+ *Used for TSO BIND - Remove this line*
+ ENTRY PROGNAME
+ INCLUDE SYSLIB(PROGNAME)     
