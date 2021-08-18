@@ -76,8 +76,6 @@
            88 M-EOF                VALUE "01".
            88 M-VALID              VALUE "00", "01".
 
-       01 WS-TEMP-IDX              PIC 9(1).
-
        01 REPORT-FORMAT.
            03 RECORD-TYPE          PIC X(20).
            03 FILLER               PIC X(20)   VALUE SPACES.
@@ -110,8 +108,8 @@
        A100-MAIN-LOGIC             SECTION.
            DISPLAY "STATUS - STARTING PROGRAM"
            PERFORM B100-INIT-STAGE
-           READ MASTERFILE AT END MOVE HIGH-VALUES TO M-ACCOUNT.
-           READ GOODFILE   AT END MOVE HIGH-VALUES TO G-ACCOUNT.
+           PERFORM R100-READ-GOOD
+           PERFORM R200-READ-MASTER
            PERFORM C100-MAIN-PROCESS UNTIL G-ACCOUNT = HIGH-VALUES AND
                                            M-ACCOUNT = HIGH-VALUES.
            PERFORM W400-WRITE-REPORT
@@ -153,12 +151,10 @@
            MOVE M-ACCOUNT          TO O-ACCOUNT-NUM
            MOVE M-INITIAL-VAL      TO O-INITIAL-VAL
            MOVE M-SURNAME          TO O-SURNAME
-           MOVE 5 TO WS-TEMP-IDX
-           PERFORM VARYING M-IDX FROM 4 BY -1 UNTIL M-IDX = 1
-               SET  O-IDX                 TO WS-TEMP-IDX
-               MOVE M-MARKER(M-IDX)       TO O-MARKER(O-IDX)
-               MOVE M-TRANS-AMOUNT(M-IDX) TO O-TRANS-AMOUNT(O-IDX)
-               SUBTRACT 1               FROM WS-TEMP-IDX
+           PERFORM VARYING M-IDX FROM 1 BY 1 UNTIL M-IDX > 4
+               MOVE M-MARKER(M-IDX)       TO O-MARKER(M-IDX + 1)
+               MOVE M-TRANS-AMOUNT(M-IDX) TO O-TRANS-AMOUNT(M-IDX + 1)
+               DISPLAY "MARKER " O-MARKER(M-IDX + 1)
            END-PERFORM
 
            MOVE G-MARKER        TO O-MARKER(1)
