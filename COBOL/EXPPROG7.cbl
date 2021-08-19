@@ -83,17 +83,17 @@
 
        01 REPORT-RECORD.
            03 ACCOUNT-OUT          PIC X(5).
-           03 FILLER               PIC X(4)  VALUE SPACES.
+           03 FILLER               PIC X(6)  VALUE SPACES.
            03 INITIAL-OUT          PIC X(1).
-           03 FILLER               PIC X(5)  VALUE SPACES.
+           03 FILLER               PIC X(6)  VALUE SPACES.
            03 SURNAME-OUT          PIC X(12).
            03 FILLER               PIC X(2)  VALUE SPACES.
-           03 BALANCE-OUT          PIC S9(9) COMP-3.
+           03 BALANCE-OUT          PIC S9(5).
            03 FILLER               PIC X(2)  VALUE SPACES.
            03 HIST-TRANS OCCURS 5 TIMES INDEXED BY R-IDX.
                05 MARKER-OUT       PIC X(1).
                05 FILLER           PIC X(2)  VALUE SPACES.
-               05 TRANS-AMOUNT-OUT PIC S9(9) COMP-3.
+               05 TRANS-AMOUNT-OUT PIC S9(5).
                05 FILLER           PIC X(4)  VALUE SPACES.
       *---------------------
        PROCEDURE DIVISION.
@@ -122,15 +122,17 @@
            DISPLAY "DOING MY REPORT WRITING HERE..."
            WRITE PRINTLINE FROM REPORT-HEADER AFTER ADVANCING PAGE
            WRITE PRINTLINE FROM REPORT-COL-1  AFTER ADVANCING 1 LINES
-           WRITE PRINTLINE FROM REPORT-COL-2 AFTER ADVANCING 2 LINES
+           WRITE PRINTLINE FROM REPORT-COL-2  AFTER ADVANCING 2 LINES
            MOVE ACCOUNT-NUM TO ACCOUNT-OUT
            MOVE INITIAL-VAL TO INITIAL-OUT
            MOVE SURNAME     TO SURNAME-OUT
            MOVE BALANCE     TO BALANCE-OUT
+           PERFORM VARYING M-IDX FROM 1 BY 1 UNTIL M-IDX > 5
+               MOVE MARKER(M-IDX)       TO MARKER-OUT(M-IDX)
+               MOVE TRANS-AMOUNT(M-IDX) TO TRANS-AMOUNT-OUT(M-IDX)
+           END-PERFORM
+           WRITE PRINTLINE FROM REPORT-RECORD  AFTER ADVANCING 1 LINES
            .
-           PERFORM VARYING M-IDX FROM 1 BY 1 UNTIL M-IDX > 4
-               MOVE M-MARKER(M-IDX)       TO O-MARKER(M-IDX + 1)
-               MOVE M-TRANS-AMOUNT(M-IDX) TO O-TRANS-AMOUNT(M-IDX + 1)
 
        R100-READ-MASTER            SECTION.
            READ MASTERFILE NEXT
