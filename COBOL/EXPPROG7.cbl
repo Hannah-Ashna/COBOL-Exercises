@@ -54,6 +54,8 @@
 
        01 WS-LINE-COUNT            PIC 9(2).
 
+       01 WS-PAGE-COUNT            PIC 9(2).
+
        01 REPORT-HEADER.
            03 FILLER               PIC X(47) VALUE SPACES.
            03 REPORT-TITLE         PIC X(6)  VALUE "REPORT".
@@ -89,14 +91,14 @@
            03 INITIAL-OUT          PIC X(1).
            03 FILLER               PIC X(6)  VALUE SPACES.
            03 SURNAME-OUT          PIC X(12).
-           03 FILLER               PIC X(2)  VALUE SPACES.
-           03 BALANCE-OUT          PIC S9(5).
+           03 FILLER               PIC X(1)  VALUE SPACES.
+           03 BALANCE-OUT          PIC ++(9)9.
            03 FILLER               PIC X(2)  VALUE SPACES.
            03 HIST-TRANS OCCURS 5 TIMES INDEXED BY R-IDX.
                05 MARKER-OUT       PIC X(1).
-               05 FILLER           PIC X(2)  VALUE SPACES.
-               05 TRANS-AMOUNT-OUT PIC S9(5).
-               05 FILLER           PIC X(4)  VALUE SPACES.
+               05 FILLER           PIC X(8)  VALUE SPACES.
+               05 TRANS-AMOUNT-OUT PIC ++(9)9.
+               05 FILLER           PIC X(16) VALUE SPACES.
       *---------------------
        PROCEDURE DIVISION.
        A100-MAIN-LOGIC             SECTION.
@@ -111,8 +113,10 @@
        B100-INIT-STAGE             SECTION.
            OPEN INPUT   MASTERFILE
            OPEN OUTPUT  PRINTFILE
+           WRITE PRINTLINE FROM REPORT-HEADER AFTER ADVANCING PAGE
            WRITE PRINTLINE FROM REPORT-COL-1  AFTER ADVANCING 1 LINE
            WRITE PRINTLINE FROM REPORT-COL-2  AFTER ADVANCING 2 LINE
+           MOVE  1      TO WS-PAGE-COUNT
            MOVE  5      TO WS-LINE-COUNT
            MOVE 'A0001' TO ACCOUNT-NUM
            START MASTERFILE
@@ -138,6 +142,7 @@
            ELSE
                MOVE  0 TO WS-LINE-COUNT
                ADD   7 TO WS-LINE-COUNT
+               ADD   1 TO WS-PAGE-COUNT
                WRITE PRINTLINE FROM REPORT-HEADER AFTER ADVANCING PAGE
                WRITE PRINTLINE FROM REPORT-COL-1  AFTER ADVANCING 1 LINE
                WRITE PRINTLINE FROM REPORT-COL-2  AFTER ADVANCING 2 LINE
