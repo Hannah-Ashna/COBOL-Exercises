@@ -290,7 +290,7 @@
                     MULTIPLY RETAIL-PRICE BY QUANTITY
                     GIVING WS-TOTAL-5
                     ADD WS-TOTAL-5 TO TOTAL-5
-               WHEN DEPARTMENT = 1 AND SALE-INDICATOR = "S"
+               WHEN DEPARTMENT = 5 AND SALE-INDICATOR = "S"
                     MULTIPLY SALE-PRICE BY QUANTITY
                     GIVING WS-TOTAL-5
                     ADD WS-TOTAL-5 TO TOTAL-5
