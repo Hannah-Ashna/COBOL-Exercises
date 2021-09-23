@@ -13,6 +13,7 @@ The specficiation for each of the exercises can be found in this [document](http
 * EXPPROG5 - Extraction Exercise
 * EXPPROG6 - Update Exercise
 * EXPPROG7 - VSAM Mayhem Exercise
+* EXPPROG8 - Conversion of a C++ Program to COBOL
 
 #### DTB - Decision Table COBOL:
 * DTBPROG1 - Rewriting EXPPROG1 using DTB
