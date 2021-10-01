@@ -113,8 +113,6 @@
        01           INPUT-EOF                        Y N
        ACTIONS
        01  DISPLAY  "STATUS - PROGRAM STARTING"    X - -
-           DISPLAY  "CHOSEN CONSTITUENCY: "
-           DISPLAY  INPUT-PARM
        02  PERFORMX B000-INIT-CODE                 X - -
        03  PERFORMX C000-PROCESS                   - - X
        04  REPEAT                                  - - X
@@ -178,50 +176,55 @@
            SET      REC-INVALID
             TO      TRUE
 
-       G000-VALIDATE-VOTE      SECTION.
-           SET VOTE-OK TO TRUE
-           IF VOTE-VALUE(WS-COUNTER) NOT = " " AND WS-COUNTER < 77
-               EVALUATE VOTE-VALUE(WS-COUNTER)
-                   WHEN 0
-                       DISPLAY "+1 Vote for Raving Loony Party"
-                       ADD 1 TO VOTE-COUNT(1)
-                   WHEN 1
-                       DISPLAY "+1 Vote for Conservative"
-                       ADD 1 TO VOTE-COUNT(2)
-                   WHEN 2
-                       DISPLAY "+1 Vote for Plaid Cymru"
-                       ADD 1 TO VOTE-COUNT(3)
-                   WHEN 3
-                       DISPLAY "+1 Vote for Free Cleethorpes"
-                       ADD 1 TO VOTE-COUNT(4)
-                   WHEN 4
-                       DISPLAY "+1 Vote for Labour"
-                       ADD 1 TO VOTE-COUNT(5)
-                   WHEN 5
-                       DISPLAY "+1 Vote for Liberal"
-                       ADD 1 TO VOTE-COUNT(6)
-                   WHEN 6
-                       DISPLAY "+1 Vote for Scottish National"
-                       ADD 1 TO VOTE-COUNT(7)
-                   WHEN OTHER
-                       DISPLAY "+1 for Spoilt Vote"
-                       ADD 1 TO VOTE-COUNT(8)
-               END-EVALUATE
-           ELSE
-               DISPLAY "Status - Vote Validation Complete"
-               SET VOTE-END TO TRUE
-           END-IF
-           ADD 1 TO WS-COUNTER
-           .
+       DT  G000-VALIDATE-VOTE
+       CONDITIONS                                  0 1 2
+       01           VOTE-VALUE(WS-COUNTER)           Y N
+           NOT =    " "
+           AND      WS-COUNTER
+           <        77
+       ACTIONS
+       01  SET      VOTE-OK                        X - -
+            TO      TRUE
+       02  PERFORMX G001-VALIDATE-VOTE             - X -
+       03  DISPLAY  "STATUS - VALIDATION DONE"     - - X
+           SET      VOTE-END
+            TO      TRUE
+       04  ADD      1                              - X X
+            TO      WS-COUNTER
 
-
-
-
-
-
-
-
-
+       DT  G001-VALIDATE-VOTE
+       CONDITIONS                                  1 2 3 4 5 7 8 9
+       01           VOTE-VALUE(WS-COUNTER)         Y N N N N N N N
+           =        0
+       02           VOTE-VALUE(WS-COUNTER)         N Y N N N N N N
+           =        1
+       03           VOTE-VALUE(WS-COUNTER)         N N Y N N N N N
+           =        2
+       04           VOTE-VALUE(WS-COUNTER)         N N N Y N N N N
+           =        3
+       05           VOTE-VALUE(WS-COUNTER)         N N N N Y N N N
+           =        4
+       06           VOTE-VALUE(WS-COUNTER)         N N N N N Y N N
+           =        5
+       07           VOTE-VALUE(WS-COUNTER)         N N N N N N Y N
+           =        6
+       ACTIONS
+       01  ADD      1                              X - - - - - - -
+            TO      VOTE-COUNT(1)
+       02  ADD      1                              - X - - - - - -
+            TO      VOTE-COUNT(2)
+       03  ADD      1                              - - X - - - - -
+            TO      VOTE-COUNT(3)
+       04  ADD      1                              - - - X - - - -
+            TO      VOTE-COUNT(4)
+       05  ADD      1                              - - - - X - - -
+            TO      VOTE-COUNT(5)
+       06  ADD      1                              - - - - - X - -
+            TO      VOTE-COUNT(6)
+       07  ADD      1                              - - - - - - X -
+            TO      VOTE-COUNT(7)
+       08  ADD      1                              - - - - - - - X
+            TO      VOTE-COUNT(8)
 
 
        G001-FIND-WINNER        SECTION.
@@ -265,6 +268,4 @@
        DT  D000-READ-FILE
        ACTIONS
        01  READ     VOTESINPUT
-           DISPLAY  "NEW RECORD: "
-           DISPLAY  VOTES-RECORD
  
