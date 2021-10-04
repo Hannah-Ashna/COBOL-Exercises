@@ -111,12 +111,15 @@
        DT  A000-MAIN-LOGIC                         0 1 2
        CONDITIONS
        01           INPUT-EOF                        Y N
+
        ACTIONS
        01  DISPLAY  "STATUS - PROGRAM STARTING"    X - -
        02  PERFORMX B000-INIT-CODE                 X - -
-       03  PERFORMX C000-PROCESS                   - - X
+       03  DISPLAY  "C-PROCESS STARTING"           - - X
+           PERFORMX C000-PROCESS
        04  REPEAT                                  - - X
-       05  PERFORMX G001-FIND-WINNER               - X -
+       05  DISPLAY  "WRITING OUTPUT"               - X -
+           PERFORMX G001-FIND-WINNER
            PERFORMX X000-CLOSE-FILE
            DISPLAY  "STATUS - PROGRAM COMPLETE"
            STOP     RUN
@@ -140,23 +143,21 @@
        03  PERFORMX D000-READ-FILE                 - X -
        04  REPEAT                                  - - X
 
-       C000-PROCESS            SECTION.
-           PERFORM E000-CHECK-CONST
-           SET VOTE-OK TO TRUE
-
-           IF REC-VALID
-               MOVE 1 TO WS-COUNTER
-               DISPLAY "Status - Adding valid const votes"
-               PERFORM G000-VALIDATE-VOTE UNTIL VOTE-END
-               PERFORM D000-READ-FILE
-           END-IF
-           IF REC-INVALID
-               MOVE 1 TO WS-COUNTER
-               DISPLAY "Status - Adding invalid const votes"
-               PERFORM G010-COUNT-SPOILT UNTIL VOTE-END
-               PERFORM D000-READ-FILE
-           END-IF
-           .
+       DT  C000-PROCESS
+       CONDITIONS                                  0 1 2 3 4
+       01           REC-VALID                        Y N Y N
+       02           VOTE-END                         Y Y N N
+       ACTIONS
+       01  PERFORMX E000-CHECK-CONST               X - - - -
+           SET      VOTE-OK
+            TO      TRUE
+           MOVE     1
+             TO     WS-COUNTER
+       02  PERFORMX G000-VALIDATE-VOTE             - - - X -
+       03  PERFORMX G010-COUNT-SPOILT              - - - - X
+       04  PERFORMX D000-READ-FILE                 - X X - -
+           DISPLAY  "READ NEW LINE"
+       05  REPEAT                                  - - - X X
 
        DT  X000-CLOSE-FILE
        ACTIONS
@@ -193,7 +194,7 @@
             TO      WS-COUNTER
 
        DT  G001-VALIDATE-VOTE
-       CONDITIONS                                  1 2 3 4 5 7 8 9
+       CONDITIONS                                  1 2 3 4 5 6 7 8
        01           VOTE-VALUE(WS-COUNTER)         Y N N N N N N N
            =        0
        02           VOTE-VALUE(WS-COUNTER)         N Y N N N N N N
@@ -226,28 +227,39 @@
        08  ADD      1                              - - - - - - - X
             TO      VOTE-COUNT(8)
 
-
-       G001-FIND-WINNER        SECTION.
-           COMPUTE WS-RES = FUNCTION MAX(VOTE-COUNT(1) VOTE-COUNT(2)
-                                         VOTE-COUNT(3) VOTE-COUNT(4)
-                                         VOTE-COUNT(4) VOTE-COUNT(5)
-                                         VOTE-COUNT(6) VOTE-COUNT(7))
-           DISPLAY "HIGHEST VOTE COUNT IS: " WS-RES
-
-           PERFORM VARYING PARTY-IDX FROM 1 BY 1 UNTIL PARTY-IDX > 8
-               SET  VOTE-IDX              TO PARTY-IDX
-               MOVE VOTE-COUNT(VOTE-IDX)  TO P-VOTES
-               MOVE PARTY-DATA(PARTY-IDX) TO P-NAME
-
-               IF VOTE-COUNT(VOTE-IDX) = WS-RES AND VOTE-IDX < 8
-                   MOVE WS-WIN-STATUS  TO P-WINNER
-               ELSE
-                   MOVE SPACES            TO P-WINNER
-               END-IF
-
-               WRITE RESULTS-RECORD FROM WS-OUTPUT-DATA
-           END-PERFORM
-           .
+       DT  G001-FIND-WINNER
+       CONDITIONS                                  0 1 2 3 4
+       01           PARTY-IDX                        Y N Y N
+           >        8
+       02           VOTE-COUNT(VOTE-IDX)             Y Y N N
+           =        WS-RES
+           AND      VOTE-IDX
+           <        8
+       ACTIONS
+       01  COMPUTE  WS-RES                         X - - - -
+           = FUNCTION MAX
+                    (VOTE-COUNT(1) VOTE-COUNT(2)
+                    VOTE-COUNT(3) VOTE-COUNT(4)
+                    VOTE-COUNT(4) VOTE-COUNT(5)
+                    VOTE-COUNT(6) VOTE-COUNT(7))
+           MOVE     1
+             TO     PARTY-IDX
+       02  MOVE     PARTY-IDX                      - - X - X
+             TO     VOTE-IDX
+           MOVE     VOTE-COUNT(VOTE-IDX)
+             TO     P-VOTES
+           MOVE     PARTY-DATA(PARTY-IDX)
+             TO     P-NAME
+       03  MOVE     WS-WIN-STATUS                  - - X - -
+             TO     P-WINNER
+       04  MOVE     SPACES                         - - - - X
+             TO     P-WINNER
+       05  WRITE    RESULTS-RECORD                 - - X - X
+            FROM    WS-OUTPUT-DATA
+           DISPLAY  "WRITE RECORD"
+           ADD      1
+             TO     PARTY-IDX
+       06  REPEAT                                  - - X - X
 
        DT  G010-COUNT-SPOILT
        CONDITIONS                                  0 1 2 3 4
@@ -268,4 +280,6 @@
        DT  D000-READ-FILE
        ACTIONS
        01  READ     VOTESINPUT
- 
+           AT END SET
+                    INPUT-EOF
+           TO TRUE 
