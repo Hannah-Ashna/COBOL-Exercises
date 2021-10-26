@@ -23,3 +23,7 @@ The specficiation for each of the exercises can be found in this [document](http
 -------------------------------
 ### Templates:
 A lot of stuff on the Mainframe is based off of pre-existing templates that have been modified to fit the purpose of one's code. I have included some [JCL](https://github.com/Hannah-Ashna/COBOL-Exercises/tree/main/JCL) and [Linkparm](https://github.com/Hannah-Ashna/COBOL-Exercises/blob/main/PROGNAME) templates that I used to link and run the exercises mentioned above. Different organisations will obviously have different standards so the templates may need to be modified to fit your organisation/team's standards.
+
+#### JCL - Job Control Language:
+* SAMPLE  - Basic template used for most of the Cobol Programs to handle file inputs and outputs
+* VSAMDEF - Basic template for creation a VSAM
