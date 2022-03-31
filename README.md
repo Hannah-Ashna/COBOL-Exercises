@@ -27,3 +27,7 @@ A lot of stuff on the Mainframe is based off of pre-existing templates that have
 #### JCL - Job Control Language:
 * SAMPLE  - Basic template used for most of the Cobol Programs to handle file inputs and outputs
 * VSAMDEF - Basic template for creation a VSAM
+* GDGDEF - Basic template for the creation of a GDG Base
+* GDGDEL - Basic template for deletion a GDG base
+* COPYFILE - Basic template for copying (and overwriting) one file's contents into another
+* MERGSORT - Basic template for merging the contents of multiple files into one single file with the addition of a sort by statement to organise the records based on a specified criteria
