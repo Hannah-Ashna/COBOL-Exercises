@@ -16,7 +16,8 @@
 //            DISP=SHR
 //* THIS IS WHERE YOU SPECIFY THE DETAILS FOR HOW YOU WANT THE RECORDS TO BE SORTED
 //SYSIN       DD   *                                       
-         SORT FIELDS=(5,26,CH,A)
+  SORT FIELDS=(5,26,CH,A)
+  OPTION COPY
 //* #OUTPUT FILES#                                         
 //SORTOUT     DD  DSN=(Insert file name here - FILE C),  
 //            DISP=(NEW,CATLG,DELETE),                     
