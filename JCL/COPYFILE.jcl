@@ -8,7 +8,8 @@
 //*------------------------------------------------------------------**
 //* THIS IS FOR WHEN YOU WANT TO OVERWRITE FILE B'S CONTENTS WITH FILE A
 //COPYFILE EXEC PGM=SORT,PARM='BMSG',                   
-//              REGION=0M                                
+//              REGION=0M
+//*
 //SORTIN   DD DSN=(Insert file name here - FILE A),         
 //            DISP=SHR                                 
 //SORTOUT  DD DSN=(Insert file name here - FILE B),
@@ -18,8 +19,8 @@
 //            DCB=(LRECL=35,RECFM=FB,BLKSIZE=0)
 //* IF IT'S AN EXISTING FILE, COMMENT OUT THESE VALUES ABOVE AND JUST UNCOMMENT THE LINE BELOW
 //*            DISP=SHR
+//*
 //SYSIN DD *                                           
- OPTION COPY                                           
+  OPTION COPY                                           
 //SYSPRINT DD SYSOUT=*                                 
 //SYSOUT   DD SYSOUT=*                                 
-//*                                                    
