@@ -11,7 +11,7 @@
 //SYSPRINT    DD SYSOUT=*
 //SYSIN       DD *
  DEFINE GDG -
-        (NAME(Insert your GDG Name here)-
+        (NAME(Insert GDG Name here)-
         LIMIT(Insert max number of gens here) -
         NOEMPTY -
         SCRATCH -
