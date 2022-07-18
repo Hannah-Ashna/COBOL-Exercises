@@ -1,0 +1,30 @@
+A0000001MR ABCase1                         08072022010720220000015000          A
+A00000011   Test Street         Test Town           County    AA11 123         A
+A0000002MR ABCase2                         08072022010720220000025000          A
+A00000022   Test Street         Test Town           County    AA22 123         A
+A0000003MR ABCase3                         08072022010720220000010000          A
+A00000033   Test Street         Test Town           County    AA33 123         A
+A0000004MR ABCase4                         08072022010720220000012500          A
+A00000044   Test Street         Test Town           County    AA44 123         A
+A0000005MR ABCase5                         08072022010720220000052500          A
+A00000055   Test Street         Test Town           County    AA55 123         A
+A0000006MR ABCase6                         08072022010720220000060000          A
+A00000066   Test Street         Test Town           County    AA66 123         A
+A0000007MR ABCase7                         08072022010720220000070000          A
+A00000077   Test Street         Test Town           County    AA77 123         A
+A0000008MR ABCase8                         08072022010720220000080000          A
+A00000088   Test Street         Test Town           County    AA88 123         A
+A0000009MR ABCase9                         08072022010720220000085000          A
+A00000099   Test Street         Test Town           County    AA99 123         A
+A0000010MR ABCase10                        08072022010720220000095000          A
+A000001010  Test Street         Test Town           County    AA10 123         A
+A0000011MR ABCase11                        08072022010720220000091000          A
+A000001111  Test Street         Test Town           County    AA11 123         A
+A0000012MR ABCase12                        08072022010720220000092000          A
+A000001212  Test Street         Test Town           County    AA12 123         A
+A0000013MR ABCase13                        08072022010720220000093000          A
+A000001313  Test Street         Test Town           County    AA13 123         A
+A0000014MR ABCase14                        08072022010720220000094000          A
+A000001414  Test Street         Test Town           County    AA14 123         A
+A0000015MR ABCase15                        08072022010720220000095000          A
+A000001515  Test Street         Test Town           County    AA15 123         A
