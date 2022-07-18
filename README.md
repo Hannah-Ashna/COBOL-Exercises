@@ -3,7 +3,7 @@ As part of my placement role I have had to learn several different Mainframe bas
 
 -------------------------------
 ### Exercises:
-The specficiation for each of the exercises can be found in this [document](https://github.com/Hannah-Ashna/COBOL-Exercises/blob/main/Exercises.pdf), they were created by my mentor Ben. All my solutions for them can be found in either the [COBOL](https://github.com/Hannah-Ashna/COBOL-Exercises/tree/main/COBOL) or [DTB](https://github.com/Hannah-Ashna/COBOL-Exercises/tree/main/DTB) folders.
+The specficiation for each of the exercises can be found in this [document](https://github.com/Hannah-Ashna/COBOL-Exercises/blob/main/Exercises.pdf) while the input files and output samples can be found in this [resource](https://github.com/Hannah-Ashna/Mainframe-101/tree/main/Exercise%20Resources) folder. They were created by my mentor Ben. All my solutions for them can be found in either the [COBOL](https://github.com/Hannah-Ashna/COBOL-Exercises/tree/main/COBOL) or [DTB](https://github.com/Hannah-Ashna/COBOL-Exercises/tree/main/DTB) folders.
 
 #### COBOL:
 * EXPPROG1 - Moving Exercise
