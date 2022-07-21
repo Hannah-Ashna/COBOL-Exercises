@@ -17,8 +17,8 @@ The specficiation for each of the exercises can be found in this [document](http
 
 #### DTB - Decision Table COBOL:
 * DTBPROG1 - Rewriting EXPPROG1 using DTB
-* DTBPROG4 - Rewriting EXPPROG4 using DTB
-* DTBPROG6 - Rewriting EXPPROG6 using DTB
+* DTBPROG3 - Rewriting EXPPROG3 using DTB
+* DTBPROG5 - Rewriting EXPPROG5 using DTB
 
 -------------------------------
 ### Templates:
