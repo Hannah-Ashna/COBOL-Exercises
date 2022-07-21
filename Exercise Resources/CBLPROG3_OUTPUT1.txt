@@ -1,0 +1,8 @@
+RAVING LOONY PARTY                                0010     ***
+CONSERVATIVE                                      0004
+PLAID CYMRU                                       0005
+FREE CLEETHORPES                                  0006
+LABOUR                                            0007
+LIBERAL                                           0008
+SCOTTISH NAT.                                     0009
+SPOILT                                            0244
