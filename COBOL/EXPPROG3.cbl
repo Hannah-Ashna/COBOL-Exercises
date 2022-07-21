@@ -1,5 +1,5 @@
        ID DIVISION.                                                     
-       PROGRAM-ID. EXPPROG4.                                           
+       PROGRAM-ID. EXPPROG3.                                           
        AUTHOR. HANNAH JACOB.                                            
        DATE-WRITTEN. 23RD JULY 2021.                                   
        DATE-COMPILED.                                                   
