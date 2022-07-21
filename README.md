@@ -8,12 +8,12 @@ The specficiation for each of the exercises can be found in this [document](http
 #### COBOL:
 * EXPPROG1 - Moving Exercise
 * EXPPROG2 - Arithmetic Exercise
-* EXPPROG3 - Reworked EXPPROG1 to use IOMOD
-* EXPPROG4 - Subscripting/Indexing Exercise
-* EXPPROG5 - Extraction Exercise
-* EXPPROG6 - Update Exercise
-* EXPPROG7 - VSAM Mayhem Exercise
-* EXPPROG8 - Conversion of a C++ Program to COBOL
+* EXPPROG3 - Subscripting/Indexing Exercise
+* EXPPROG4 - Extraction Exercise
+* EXPPROG5 - Update Exercise
+* EXPPROG6 - VSAM Mayhem Exercise
+* EXPPROG7 - Conversion of a C++ Program to COBOL
+* IMDPROG1 - Reworked EXPPROG1 to use IOMOD
 
 #### DTB - Decision Table COBOL:
 * DTBPROG1 - Rewriting EXPPROG1 using DTB
